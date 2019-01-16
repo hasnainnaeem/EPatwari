@@ -9,13 +9,14 @@
 
 
 ## Features
-- Object-Orientated Programming concepts are followed for easy Reuse and Extension of software.
-- Database design is done properly after ERD to schema mapping algorithm and normalization process (after finding out functional dependencies).
-- Software, blockchain and database independence
-- MYSQL is not involved for data storage and retrieval. It is only used for data
+- *Object-Orientated Programming concepts* are followed for easy Reuse and Extension of software.
+- *Database design* is done properly after ERD to schema mapping algorithm and normalization process (after finding out functional dependencies).
+- *Mini-world entities* (i-e: Land, Property, Person, Organization)are properly created and mapped in database and software
+- *Software, blockchain, and database independence*.
+- *MYSQL is not involved for data storage* and retrieval. It is only used for data
 exporting purposes where database is needed to analyze data. 
-- Blockchain to MYSQL exporter for Data Scientists
-- Serialized blockchain object (stored data) which can be transferred to other machines
+- *Blockchain to MYSQL exporter* for Data Scientists
+- *Serialized blockchain object* (stored data) which can be transferred to other machines
 easily (for decentralization)
 
 
