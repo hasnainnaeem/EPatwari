@@ -11,6 +11,7 @@ Date, Hours, Cups Of TEA, Line Count:  18/12/2018, 4, 1, 2495 - 274 lines
 Date not updated
  */
 import javax.naming.CompositeName;
+import java.io.*;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -19,19 +20,18 @@ import java.util.Date;
 public class main {
     private static Blockchain epatwari = new Blockchain();
     private static Scanner scanner = new Scanner(System.in);
-    private static Connection conn = null;
-
     public static void main(String[] args){
-//        epatwari.getStarted();
+
+        System.out.println(HashUtil.getHash("hasnain naeem"));
         displayOptions();
     }
 
     private static void displayOptions(){
-
         while (true) {
             try {
                 int choice = 0;
                 while (choice < 1 || choice > 6) {
+                    System.out.println("\n\n*****************************************************");
                     System.out.println("Select option:");
                     System.out.println("\t1. Do Transaction");
                     System.out.println("\t2. Display Blockchain Data");
@@ -39,9 +39,10 @@ public class main {
                     System.out.println("\t4. Find Properties Owned by an Organization(s)");
                     System.out.println("\t5. Copy Blockchain Data to MySQL Database");
                     System.out.println("\t6. Exit");
-
                     System.out.print(">");
                     choice = scanner.nextInt();
+                    System.out.println("*****************************************************");
+
                 }
 
                 if (choice == 1)
@@ -85,7 +86,20 @@ public class main {
                         e.printStackTrace();
                     }
                 } else if (choice == 5) {
-                    connectAndImportMysql();
+                    int importChoice = 0;
+                    while(importChoice != 1 && importChoice != 2) {
+                        System.out.println("Select Import Option:");
+                        System.out.println("\t1. Import All Data");
+                        System.out.println("\t2. Import New Nodes Only");
+                        System.out.print("> ");
+                        importChoice = scanner.nextInt();
+                    }
+
+                    if(importChoice == 1)
+                        connectAndExportToMysql(true);
+                    else if(importChoice == 2)
+                        connectAndExportToMysql(false);
+
                 } else if (choice == 6)
                     break;
             } catch (Exception e) {
@@ -98,8 +112,17 @@ public class main {
     This method is used to export data of Blockchain into Mysql Database. Data changes whenever a transaction is done. So,
     this should be used before analyzing data. Database can be used to extract different kinds of information from database;
      */
-    public static void connectAndImportMysql()
+    public static void connectAndExportToMysql(Boolean readFromStart)
     {
+        int SID = 0;
+        int blockNumber = 0;
+        int startingNode = 0;
+        if(!readFromStart) { // Don't import nodes which were import last time
+            int data[] = readFromFile();
+            SID = data[1];
+            blockNumber = data[0];
+            startingNode = data[0];
+        }
 
         System.out.println("Connecting to Mysql Server to export data.");
 
@@ -110,6 +133,8 @@ public class main {
                 + " values (?, ?, ?, ?, ?, ?)";
         String queryForPerson = " insert into person (CNIC, fname, lname, DOB, SID)"
                 + " values (?, ?, ?, ?, ?)";
+        String queryForGovOfficial = " insert into GovOfficial (CNIC)"
+                + " values (?)";
         String queryForHeir = " insert into heir (currHash, Time_stamp, sid)"
                 + " values (?, ?, ?)";
         String queryForBuyer = " insert into buyer (currHash, Time_stamp, sid)"
@@ -131,6 +156,7 @@ public class main {
         try {
 
             // Connecting to database
+            Connection conn = null;
             String url = "jdbc:mysql://127.0.0.1:3306/epatwari";
             Properties info = new Properties();
             info.put("user", "root");
@@ -139,10 +165,13 @@ public class main {
             conn = DriverManager.getConnection(url, info);
 
             // Getting prepared statements ready
-            // Someone
+            // Someone: Person, Organization
             PreparedStatement PSForSomeone = conn.prepareStatement(queryForSomeone);
             PreparedStatement PSForPerson = conn.prepareStatement(queryForPerson);
             PreparedStatement PSForOrganization = conn.prepareStatement(queryForOrganization);
+
+            // For government official
+            PreparedStatement PSForGovOfficial = conn.prepareStatement(queryForGovOfficial);
 
             // Buyers, Sellers, Heirs
             PreparedStatement PSForBuyer = conn.prepareStatement(queryForBuyer);
@@ -188,10 +217,9 @@ public class main {
 
 
             // GAME BEGINS
-            int blockNumber = 0;
-            int SID = 0;
-
-            for(Block block: blockchain) {
+            Block block;
+            for(int i = startingNode; i < blockchain.size(); i++) {
+                block = blockchain.get(i);
 
                 // Inserting land data of current block
                 land = block.getLand();
@@ -206,11 +234,24 @@ public class main {
                 PSForLand.setString (7, land.getCity());
                 PSForLand.setString (8, land.getCountry());
 
+                // inserting land data
                 try {
                     PSForLand.execute();
                 }
 
                 // Land data is already present in database
+                catch (SQLIntegrityConstraintViolationException e){
+                }
+
+
+                // inserting Government official data
+                PSForGovOfficial.setString(1, block.getCNICOfVerifier());
+
+                try {
+                    PSForGovOfficial.execute();
+                }
+
+                // ignore - data is already present in database
                 catch (SQLIntegrityConstraintViolationException e){
                 }
 
@@ -708,14 +749,71 @@ public class main {
                 buyerSID.clear();
                 sellerSID.clear();
                 heirSID.clear();
-
-
                 blockNumber++;
             }
 
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
+
+        int array[] = {blockNumber, SID};
+        writeToFile(array);
+        System.out.println("Successfully imported blockchain data to database.");
+    }
+
+    public static void writeToFile(int data[]) {
+
+        String fileName = "Data\\SoftwareData\\softwareFile.txt";
+
+        try {
+            FileWriter fileWriter =
+                    new FileWriter(fileName);
+
+            BufferedWriter bufferedWriter =
+                    new BufferedWriter(fileWriter);
+
+            String dataToWrite = Integer.toString(data[0]) + " " + Integer.toString(data[1]);
+            bufferedWriter.write(dataToWrite);
+            bufferedWriter.close();
+        }
+        catch(IOException e) {
+            System.out.println(
+                    "Error writing to file '"
+                            + fileName + "'");
+            e.printStackTrace();
+        }
+    }
+
+    public static int[] readFromFile() {
+
+        String fileName = "Data\\SoftwareData\\softwareFile.txt";
+
+        int[] readData = new int[2];
+
+        try {
+            FileReader fileReader =
+                    new FileReader(fileName);
+            BufferedReader bufferedReader =
+                    new BufferedReader(fileReader);
+
+            String[] data = bufferedReader.readLine().split(" ");
+            readData[0] = Integer.parseInt(data[0]);
+            readData[1] = Integer.parseInt(data[1]);
+
+            bufferedReader.close();
+        }
+        catch(FileNotFoundException e) {
+            System.out.println(
+                    "Unable to open file '" +
+                            fileName + "'");
+        }
+        catch(IOException e) {
+            System.out.println(
+                    "Error reading file '"
+                            + fileName + "'");
+            e.printStackTrace();
+        }
+    return readData;
     }
 
 }

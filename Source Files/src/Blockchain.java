@@ -90,6 +90,7 @@ public class Blockchain implements Serializable{
         for(Block block: blockchain)
         {
             System.out.println("Printing Block # " + blockNumber + " , block hash = " + block.getHash()+" :");
+            System.out.println("CNIC of Verifier: " + block.getCNICOfVerifier());
 
             // Casting each block according to its type
             if(block.getType().equals("OPBlock")) {
