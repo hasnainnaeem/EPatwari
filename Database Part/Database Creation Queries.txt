@@ -1,0 +1,215 @@
+
+create schema if not exists EPatwari;
+drop table someone;
+drop table property;
+drop table person;
+drop table organizations;
+drop table govofficial;
+drop table office;
+drop table seller;
+drop table buyer;
+drop table heir;
+drop table residential;
+drop table commercial;
+drop table agricultural;
+drop table transactions;
+
+Create table if not exists Someone
+(
+	SID integer,
+    
+    Primary Key (SID)
+);
+
+create table if not exists Person
+(
+	CNIC varchar(13),
+    Fname Varchar(10),
+    Lname Varchar(10),
+    DoB DateTime,
+    SID int,
+    
+    primary key (CNIC)
+);
+
+create table if not exists Organizations
+(
+	OrgName Varchar(50),
+    Street varchar(100),
+    Town Varchar(50),
+    City Varchar(50),
+    Country Varchar(50),
+    SID int,
+    
+    Primary Key (OrgName)
+);
+
+create table if not exists Office
+(
+	OfficeNum Numeric(10),
+    Address Varchar(100),
+    Town Varchar(50),
+    City Varchar(50),
+    
+    Primary Key (OfficeNum)
+);
+
+create table if not exists GovOfficial
+(
+	CNIC varchar(13),
+    OfficeNum Numeric(10),
+    TelephoneNum Numeric(11),
+    
+    Primary Key (CNIC)
+);
+
+create table if not exists Transactions
+(
+	Time_Stamp Timestamp,
+    CurrHash char(64),
+    PrevHash char(64),
+    MarketValue long,
+    MortgageFlag Boolean,
+    Official_CNIC varchar(13),
+    PID int,
+    typeOfBlock char(7),
+    
+    Primary key (CurrHash, Time_stamp)
+);
+    
+Create table if not exists Property
+(
+	PID int NOT NULL,
+    Address1 Varchar(100),
+    Address2 Varchar(100),
+    Latitude float,
+    Longitude float,
+    Town Varchar(50),
+    City Varchar(50),
+    Country Varchar(50),
+    Primary Key (address1, address2, latitude, longitude, town, city, country)
+);
+
+create table if not exists Residential
+(
+	PID int,
+    
+    Primary Key (PID)
+);
+
+create table if not exists Commercial
+(
+	PID int,
+    
+    Primary Key (PID)
+);
+
+create table if not exists Agricultural
+(
+	PID int,
+    
+    Primary Key (PID)
+);
+
+create table if not exists Owns
+(
+	SID int,
+    PID int
+);
+
+create table if not exists Buyer
+(
+	CurrHash char(64),
+    Time_Stamp Timestamp,
+	SID int,
+    
+    Primary key (CurrHash, Time_Stamp, sid)
+);
+
+create table if not exists Seller
+(
+	CurrHash char(64),
+    Time_Stamp Timestamp,
+	SID int,
+    
+    Primary key (CurrHash, Time_Stamp, sid)
+);
+
+create table if not exists Heir
+(
+	CurrHash char(64),
+    Time_Stamp Timestamp,
+	SID int,
+    
+    Primary key (CurrHash, Time_Stamp, sid)
+);
+
+
+alter table person
+add Constraint FK_SID_Person foreign key (SID) References Someone(SID) on delete Restrict;
+
+
+alter table organization
+add Constraint FK_SID_Organizations foreign key (SID) References Someone(SID) on delete
+Restrict;
+
+
+alter table GovOfficial
+add Constraint FK_CNIC_GovOfficial foreign key (CNIC) References Person(CNIC) on delete
+Restrict;
+
+
+alter table GovOfficial
+add Constraint FK_OfficeNum_GovOfficial foreign key (OfficeNum) References
+Office(OfficeNum) on delete cascade;
+
+
+alter table Transactions
+add Constraint FK_Official_CNIC_Transactions foreign key (Official_CNIC) references
+Person(CNIC) on delete no action;
+
+
+alter table residential
+add Constraint FK_PID_Residential foreign key (PID) References Property(PID) on delete restrict;
+
+
+alter table commercial
+add Constraint FK_PID_Commercial foreign key (PID) References Property(PID) on delete restrict;
+
+
+alter table Agricultural
+add Constraint FK_PID_Agricultural foreign key (PID) References Property(PID) on delete restrict;
+
+
+alter table owns
+add Constraint FK_SID_Owns foreign key (SID) References Someone(SID) on delete restrict;
+
+
+alter table owns
+add Constraint FK_PID_Owns foreign key (PID) References Property(PID) on delete restrict;
+
+
+alter table buyer 
+add Constraint FK_SID_Buyer foreign key (SID) References Someone(SID) on delete restrict;
+
+
+alter table buyer
+add Constraint FK_CurrHashTime_Stamp_Buyer foreign key (CurrHash, Time_Stamp) references Transaction(CurrHash, Time_Stamp) on delete restrict;
+
+
+alter table seller
+add Constraint FK_SID_Seller foreign key (SID) References Someone(SID) on delete restrict;
+
+
+alter table seller
+add Constraint FK_CurrHashTime_Stamp_Seller foreign key (CurrHash, Time_Stamp) references Transaction(CurrHash, Time_Stamp) on delete restrict;
+
+
+alter table heir
+add Constraint FK_SID_Heir foreign key (SID) References Someone(SID) on delete restrict;
+
+
+alter table Heir
+add Constraint FK_CurrHashTime_Stamp_Heir foreign key (CurrHash, Time_Stamp) references Transaction(CurrHash, Time_Stamp) on delete restrict;
+
+
