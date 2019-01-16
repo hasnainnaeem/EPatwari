@@ -22,7 +22,7 @@ public class main {
     private static Scanner scanner = new Scanner(System.in);
     public static void main(String[] args){
 
-        System.out.println(HashUtil.getHash("hasnain naeem"));
+        // epatwari.getStarted();
         displayOptions();
     }
 
