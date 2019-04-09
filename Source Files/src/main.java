@@ -5,10 +5,10 @@ Written by: Muhammad Hasnain Naeem
 Date of starting project: 12/12/2018
 Date, Hours, Cups of tea/coffee: 12/12/2018, 1, 0
 Date, Hours, Cups Of TEA, Line Count:  13/12/2018, 6, 2, 769 - 115 blank lines
-Date, Hours, Cups Of TEA, Line Count:  15/12/2018, 9, 3, 1791 - 274 lines
-Date, Hours, Cups Of TEA, Line Count:  16/12/2018, 7, 2, 2307 - 274 lines
-Date, Hours, Cups Of TEA, Line Count:  18/12/2018, 4, 1, 2495 - 274 lines
-Date not updated
+Date, Hours, Cups Of TEA, Line Count:  15/12/2018, 9, 3, 1791 - 274 blank lines
+Date, Hours, Cups Of TEA, Line Count:  16/12/2018, 7, 2, 2307 - 274 blank lines
+Date, Hours, Cups Of TEA, Line Count:  18/12/2018, 4, 1, 2495 - 274 blank lines
+Some data missing
  */
 import javax.naming.CompositeName;
 import java.io.*;
