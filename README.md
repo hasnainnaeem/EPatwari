@@ -58,9 +58,9 @@ info.put("password", "hasnain");
 
 
 
-## Ongoing Work
+## Features to be implemented
 - Database part is not fully functional (owns table is not filled when data is exported from blockchain to MYSQL. But other tables are working fine.
-- Peer to peer protocol is being programmed to make it decentralized.
+- Peer to peer protocol is to be programmed to make it decentralized.
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
