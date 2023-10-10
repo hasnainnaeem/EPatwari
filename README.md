@@ -7,6 +7,14 @@
 
 **Note:** Blockchain (stored data) doesn't depend on MYSQL in any way. MYSQL is only for data mining purposes. EPatwari offers program, blockchain and database indepedence. Data is stored as a serialized object which is linkedlist of all nodes in blockchain.
 
+## Development Log
+Here's an interesting log of the project's development progress (excluding Data Modeling/UML creation and SQL queries), including the date of project initiation, hours worked, and cups of tea or coffee consumed:
+- Date of starting project: 12/12/2018
+- Date, Hours, Cups of tea/coffee: 12/12/2018, 1, 0
+- Date, Hours, Cups Of TEA, Line Count:  13/12/2018, 6, 2, 769 - 115 blank lines
+- Date, Hours, Cups Of TEA, Line Count:  15/12/2018, 9, 3, 1791 - 274 blank lines
+- Date, Hours, Cups Of TEA, Line Count:  16/12/2018, 7, 2, 2307 - 274 blank lines
+- Date, Hours, Cups Of TEA, Line Count:  18/12/2018, 4, 1, 2495 - 274 blank lines
 
 ## Features
 - *Object-Orientated Programming concepts* are followed for easy Reuse and Extension of software.
