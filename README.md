@@ -61,7 +61,6 @@ info.put("password", "hasnain");
 **Optional:**
 
 3. Run software and export data from blockchain to MYSQL.
-
 4. Run queries to mine useful information (Example queries are given)
 
 ## Features to be implemented
