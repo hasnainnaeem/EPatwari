@@ -64,8 +64,6 @@ info.put("password", "hasnain");
 
 4. Run queries to mine useful information (Example queries are given)
 
-
-
 ## Features to be implemented
 - Database part is not fully functional (owns table is not filled when data is exported from blockchain to MYSQL. But other tables are working fine.
 - Peer to peer protocol is to be programmed to make it decentralized.
