@@ -46,7 +46,6 @@ easily (for decentralization)
 **Password:** hasnain
 
  **-OR-**
-
 You can change these details in method connectAndImportMysql() method in Main class by changing following code:
 ```String url = "jdbc:mysql://127.0.0.1:3306/epatwari";
 Properties info = new Properties();
