@@ -27,7 +27,6 @@ exporting purposes where database is needed to analyze data.
 - *Serialized blockchain object* (stored data) which can be transferred to other machines
 easily (for decentralization)
 
-
 ## Getting Started
 1. Import MYSQL Connector library
 2. To import current data of official land documents, store their details in csv files. Format for that file is: Land Details, Owners, Heirs. Each owner and heir is separated by colon (:) and each attribute of same enitity is separated by semicolon (;). Example can be found in sample files.
