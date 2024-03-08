@@ -29,7 +29,6 @@ easily (for decentralization)
 
 
 ## Getting Started
-
 1. Import MYSQL Connector library
 2. To import current data of official land documents, store their details in csv files. Format for that file is: Land Details, Owners, Heirs. Each owner and heir is separated by colon (:) and each attribute of same enitity is separated by semicolon (;). Example can be found in sample files.
      - personOwnerships file is for lands which have humans as their owners. 
