@@ -53,7 +53,6 @@ Properties info = new Properties();
 info.put("user", "root");
 info.put("password", "hasnain"); 
 ```
-
 2. Run queries to create tables in database
 
 **Optional:**
